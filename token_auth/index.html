@@ -117,7 +117,7 @@
     </style>
 
     <script>
-        const session = sessionStorage.getItem('session');
+        const session = localStorage.getItem('session');
 
         let token;
 
@@ -128,7 +128,7 @@
         if (token) {
             axios.get('/', {
                 headers: {
-                    Authorization: token
+                    Authorization: `Bearer ${token}`
                 }
             }).then((response) => {
                 const { username } = response.data;
@@ -147,7 +147,6 @@
             });
         }
 
-
         const loginForm = document.getElementById("login-form");
         const loginButton = document.getElementById("login-form-submit");
         const loginErrorMsg = document.getElementById("login-error-msg");
@@ -164,7 +163,6 @@
             const login = loginForm.login.value;
             const password = loginForm.password.value;
 
-
             axios({
                 method: 'post',
                 url: '/api/login',
@@ -173,8 +171,7 @@
                     password
                 }
             }).then((response) => {
-                const { username } =  response.data;
-                sessionStorage.setItem('session', JSON.stringify(response.data));
+                localStorage.setItem('session', JSON.stringify(response.data));
                 location.reload();
             }).catch((response) => {
                 loginErrorMsg.style.opacity = 1;
